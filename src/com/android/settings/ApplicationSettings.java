@@ -33,6 +33,7 @@ public class ApplicationSettings extends PreferenceActivity implements
     
     private static final String KEY_TOGGLE_INSTALL_APPLICATIONS = "toggle_install_applications";
     private static final String KEY_APP_INSTALL_LOCATION = "app_install_location";
+    private static final String MOVE_ALL_APPS_PREF = "pref_move_all_apps";
     private static final String KEY_QUICK_LAUNCH = "quick_launch";
 
     // App installation location. Default is ask the user.
@@ -45,6 +46,7 @@ public class ApplicationSettings extends PreferenceActivity implements
     private static final String APP_INSTALL_AUTO_ID = "auto";
     
     private CheckBoxPreference mToggleAppInstallation;
+    private CheckBoxPreference mMoveAllAppsPref;
 
     private ListPreference mInstallLocation;
 
@@ -56,8 +58,14 @@ public class ApplicationSettings extends PreferenceActivity implements
 
         addPreferencesFromResource(R.xml.application_settings);
 
+	PreferenceScreen prefSet = getPreferenceScreen();
+
         mToggleAppInstallation = (CheckBoxPreference) findPreference(KEY_TOGGLE_INSTALL_APPLICATIONS);
         mToggleAppInstallation.setChecked(isNonMarketAppsAllowed());
+
+        mMoveAllAppsPref = (CheckBoxPreference) prefSet.findPreference(MOVE_ALL_APPS_PREF);
+        mMoveAllAppsPref.setChecked(Settings.Secure.getInt(getContentResolver(), 
+            Settings.Secure.ALLOW_MOVE_ALL_APPS_EXTERNAL, 0) == 1);
 
         mInstallLocation = (ListPreference) findPreference(KEY_APP_INSTALL_LOCATION);
         // Is app default install location set?
@@ -119,7 +127,11 @@ public class ApplicationSettings extends PreferenceActivity implements
                 setNonMarketAppsAllowed(false);
             }
         }
-
+        if (preference == mMoveAllAppsPref) {
+            Settings.Secure.putInt(getContentResolver(),
+                Settings.Secure.ALLOW_MOVE_ALL_APPS_EXTERNAL, mMoveAllAppsPref.isChecked() ? 1 : 0);
+            return true;
+        }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 

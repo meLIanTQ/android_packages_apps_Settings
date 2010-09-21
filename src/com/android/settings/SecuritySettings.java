@@ -16,7 +16,6 @@
 
 package com.android.settings;
 
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -94,6 +93,15 @@ public class SecuritySettings extends PreferenceActivity {
     private CheckBoxPreference mShowUnlockErrMsg;
     private ListPreference mIncorrectDelay;
 
+    // UnLock Settings
+    private static final String TRACKBALL_WAKE_PREF = "pref_trackball_wake";
+    private static final String TRACKBALL_UNLOCK_PREF = "pref_trackball_unlock";
+    private static final String MENU_UNLOCK_PREF = "pref_menu_unlock";
+    private static final String BUTTON_CATEGORY = "input_unlock_settings_title";
+
+    private CheckBoxPreference mTrackballWakePref;
+    private CheckBoxPreference mTrackballUnlockPref;
+    private CheckBoxPreference mMenuUnlockPref;
 
     // Location Settings
     private static final String LOCATION_NETWORK = "location_network";
@@ -158,6 +166,30 @@ public class SecuritySettings extends PreferenceActivity {
         mAssistedGps = (CheckBoxPreference) getPreferenceScreen().findPreference(ASSISTED_GPS);
 
         PreferenceManager pm = getPreferenceManager();
+
+        PreferenceScreen prefSet = getPreferenceScreen();
+
+        /* Trackball Wake */
+        mTrackballWakePref = (CheckBoxPreference) prefSet.findPreference(TRACKBALL_WAKE_PREF);
+        mTrackballWakePref.setChecked(Settings.System.getInt(getContentResolver(), 
+                Settings.System.TRACKBALL_WAKE_SCREEN, 0) == 1);
+
+        /* Trackball Unlock */
+        mTrackballUnlockPref = (CheckBoxPreference) prefSet.findPreference(TRACKBALL_UNLOCK_PREF);
+        mTrackballUnlockPref.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.TRACKBALL_UNLOCK_SCREEN, 0) == 1);
+     
+        /* Menu Unlock */
+        mMenuUnlockPref = (CheckBoxPreference) prefSet.findPreference(MENU_UNLOCK_PREF);
+        mMenuUnlockPref.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.MENU_UNLOCK_SCREEN, 0) == 1);
+        
+	/* Has Trackball? Check */
+        if (!getResources().getBoolean(R.bool.has_trackball)) {
+            PreferenceCategory buttonCategory = (PreferenceCategory)prefSet.findPreference(BUTTON_CATEGORY);
+            buttonCategory.removePreference(mTrackballWakePref);
+            buttonCategory.removePreference(mTrackballUnlockPref);
+        }
 
         // Lock screen
         if (!mLockPatternUtils.isSecure()) {
@@ -314,7 +346,7 @@ public class SecuritySettings extends PreferenceActivity {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
             Preference preference) {
         final String key = preference.getKey();
-
+	boolean value;
         final LockPatternUtils lockPatternUtils = mChooseLockSettingsHelper.utils();
         if (KEY_UNLOCK_SET_OR_CHANGE.equals(key)) {
             Intent intent = new Intent(this, ChooseLockGeneric.class);
@@ -359,8 +391,22 @@ public class SecuritySettings extends PreferenceActivity {
         } else if (preference == mAssistedGps) {
             Settings.Secure.putInt(getContentResolver(), Settings.Secure.ASSISTED_GPS_ENABLED,
                     mAssistedGps.isChecked() ? 1 : 0);
+        } else if (preference == mTrackballWakePref) {
+            value = mTrackballWakePref.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.TRACKBALL_WAKE_SCREEN, value ? 1 : 0);
+            return true;
+        } else if (preference == mTrackballUnlockPref) {
+            value = mTrackballUnlockPref.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.TRACKBALL_UNLOCK_SCREEN, value ? 1 : 0);
+            return true;
+        } else if (preference == mMenuUnlockPref) {
+            value = mMenuUnlockPref.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.MENU_UNLOCK_SCREEN, value ? 1 : 0);
+            return true;
         }
-
         return false;
     }
 

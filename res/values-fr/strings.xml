@@ -1236,4 +1236,17 @@
     <string name="pref_rotation_180_title">180°</string>
     <string name="pref_rotation_270_title">270°</string>
 
+    <!-- Application Settings : Move any app -->
+    <string name="pref_move_all_apps_title">Déplacement sur SD</string>
+    <string name="pref_move_all_apps_summary">Autoriser le déplacement de n\'importe quelle application dans la mémoire externe</string>
+
+    <!-- Lockscreen Settings -->
+    <string name="input_unlock_settings_title">Configuration du déverouillage</string>
+    <string name="pref_trackball_wake_title">Réveil par la trackball</string>
+    <string name="pref_trackball_wake_summary">Une pression sur la trackball réveille le téléphone</string>
+    <string name="pref_trackball_unlock_title">Déverrouillage par la trackball</string>
+    <string name="pref_trackball_unlock_summary">Une pression sur la trackball déverrouille le téléphone</string>
+    <string name="pref_menu_unlock_title">Déverrouillage par menu</string>
+    <string name="pref_menu_unlock_summary">Une pression sur le bouton menu déverrouille le téléphone</string>
+
 </resources>

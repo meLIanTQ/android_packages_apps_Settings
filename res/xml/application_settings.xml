@@ -26,6 +26,9 @@
             android:summaryOn="@string/install_unknown_applications"
             android:persistent="false" />
 
+    <CheckBoxPreference android:key="pref_move_all_apps"
+        android:title="@string/pref_move_all_apps_title" android:summary="@string/pref_move_all_apps_summary" />
+
     <ListPreference
         android:key="app_install_location"
         android:title="@string/app_install_location_title"
