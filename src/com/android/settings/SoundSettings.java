@@ -18,6 +18,8 @@ package com.android.settings;
 
 import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -38,6 +40,10 @@ import android.provider.Settings.SettingNotFoundException;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.IWindowManager;
+import android.text.format.DateFormat;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 public class SoundSettings extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
@@ -62,7 +68,22 @@ public class SoundSettings extends PreferenceActivity implements
     private static final String VALUE_VIBRATE_ONLY_SILENT = "silent";
     private static final String VALUE_VIBRATE_UNLESS_SILENT = "notsilent";
 
+    private static final int DIALOG_QUIET_HOURS_START = 1;
+    private static final int DIALOG_QUIET_HOURS_END = 2;
+    private static final String KEY_QUIET_HOURS_ENABLED = "quiet_hours_enabled";
+    private static final String KEY_QUIET_HOURS_START = "quiet_hours_start";
+    private static final String KEY_QUIET_HOURS_END = "quiet_hours_end";
+    private static final String KEY_QUIET_HOURS_MUTE = "quiet_hours_mute";
+    private static final String KEY_QUIET_HOURS_STILL = "quiet_hours_still";
+    private static final String KEY_QUIET_HOURS_DIM = "quiet_hours_dim";
+
     private CheckBoxPreference mSilent;
+    private CheckBoxPreference mQuietHoursEnabled;
+    private Preference mQuietHoursStart;
+    private Preference mQuietHoursEnd;
+    private CheckBoxPreference mQuietHoursMute;
+    private CheckBoxPreference mQuietHoursStill;
+    private CheckBoxPreference mQuietHoursDim;
 
     /*
      * If we are currently in one of the silent modes (the ringer mode is set to either
@@ -110,6 +131,13 @@ public class SoundSettings extends PreferenceActivity implements
 
         mVibrate = (ListPreference) findPreference(KEY_VIBRATE);
         mVibrate.setOnPreferenceChangeListener(this);
+
+        mQuietHoursEnabled = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_ENABLED);
+        mQuietHoursStart = findPreference(KEY_QUIET_HOURS_START);
+        mQuietHoursEnd = findPreference(KEY_QUIET_HOURS_END);
+        mQuietHoursMute = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_MUTE);
+        mQuietHoursStill = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_STILL);
+        mQuietHoursDim = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_DIM);
 
         mDtmfTone = (CheckBoxPreference) findPreference(KEY_DTMF_TONE);
         mDtmfTone.setPersistent(false);
@@ -287,6 +315,32 @@ public class SoundSettings extends PreferenceActivity implements
                 mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             }
             updateState(false);
+        } else if (preference == mQuietHoursEnabled) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.QUIET_HOURS_ENABLED,
+                    mQuietHoursEnabled.isChecked() ? 1 : 0);
+            return true;
+        } else if (preference == mQuietHoursMute) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.QUIET_HOURS_MUTE,
+                    mQuietHoursMute.isChecked() ? 1 : 0);
+            return true;
+        } else if (preference == mQuietHoursStill) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.QUIET_HOURS_STILL,
+                    mQuietHoursStill.isChecked() ? 1 : 0);
+            return true;
+        } else if (preference == mQuietHoursDim) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.QUIET_HOURS_DIM,
+                    mQuietHoursDim.isChecked() ? 1 : 0);
+            return true;
+        } else if (preference == mQuietHoursStart) {
+            showDialog(DIALOG_QUIET_HOURS_START);
+            return true;
+        } else if (preference == mQuietHoursEnd) {
+            showDialog(DIALOG_QUIET_HOURS_END);
+            return true;
         } else if (preference == mDtmfTone) {
             Settings.System.putInt(getContentResolver(), Settings.System.DTMF_TONE_WHEN_DIALING,
                     mDtmfTone.isChecked() ? 1 : 0);
@@ -333,5 +387,47 @@ public class SoundSettings extends PreferenceActivity implements
         }
 
         return true;
+    }
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case DIALOG_QUIET_HOURS_START:
+            return createTimePicker(Settings.System.QUIET_HOURS_START);
+        case DIALOG_QUIET_HOURS_END:
+            return createTimePicker(Settings.System.QUIET_HOURS_END);
+        }
+        return super.onCreateDialog(id);
+    }
+
+    private TimePickerDialog createTimePicker(final String key) {
+        int value = Settings.System.getInt(getContentResolver(), key, -1);
+        int hour;
+        int minutes;
+        if (value < 0) {
+            Calendar calendar = Calendar.getInstance();
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            minutes = calendar.get(Calendar.MINUTE);
+        } else {
+            hour = value / 60;
+            minutes = value % 60;
+        }
+        TimePickerDialog dlg = new TimePickerDialog(
+            this, /* context */
+            new TimePickerDialog.OnTimeSetListener() {
+
+                @Override
+                public void onTimeSet(TimePicker v, int hours, int minutes) {
+                    Settings.System.putInt(
+                            getContentResolver(),
+                            key,
+                            hours * 60 + minutes
+                    );
+                };
+            },
+            hour,
+            minutes,
+            DateFormat.is24HourFormat(this)
+        );
+        return dlg;
     }
 }
