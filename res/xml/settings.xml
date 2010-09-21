@@ -34,6 +34,16 @@
             <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
         </com.android.settings.IconPreferenceScreen>
 
+	<!-- Themes Settings
+        <com.android.settings.IconPreferenceScreen
+            settings:icon="@drawable/ic_themes"
+            android:title="@string/themes_settings_title">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="net.meliantq.themes"
+                android:targetClass="net.meliantq.themes.activities.MainActivity" />
+        </com.android.settings.IconPreferenceScreen> -->
+
         <com.android.settings.IconPreferenceScreen
             android:title="@string/radio_controls_title"
             settings:icon="@drawable/ic_settings_wireless">
@@ -52,17 +62,6 @@
                 android:targetPackage="com.android.phone"
                 android:targetClass="com.android.phone.CallFeaturesSetting" />
         </com.android.settings.IconPreferenceScreen>
-
-	<!-- CM Settings -->
-        <com.android.settings.IconPreferenceScreen
-            settings:icon="@drawable/ic_cyanogenmod"
-            android:title="@string/cm_settings_title">
-            <intent
-                android:action="android.intent.action.MAIN"
-                android:targetPackage="com.cyanogenmod.cmparts"
-                android:targetClass="com.cyanogenmod.cmparts.activities.MainActivity" />
-        </com.android.settings.IconPreferenceScreen>
-
 
         <!-- Launcher -->
 
