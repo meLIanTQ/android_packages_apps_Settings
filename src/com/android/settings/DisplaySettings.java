@@ -20,6 +20,8 @@ import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 
 import java.util.ArrayList;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -30,6 +32,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.util.Log;
@@ -42,6 +45,8 @@ public class DisplaySettings extends PreferenceActivity implements
     /** If there is no setting in the provider, use this. */
     private static final int FALLBACK_SCREEN_TIMEOUT_VALUE = 30000;
 
+    private static final String BACKLIGHT_SETTINGS = "backlight_settings";
+
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_ANIMATIONS = "animations";
     private static final String KEY_ACCELEROMETER = "accelerometer";
@@ -49,11 +54,15 @@ public class DisplaySettings extends PreferenceActivity implements
     private static final String ROTATION_180_PREF = "pref_rotation_180";
     private static final String ROTATION_270_PREF = "pref_rotation_270";
 
+    private PreferenceScreen mBacklightScreen;
+
     private ListPreference mAnimations;
+
     private CheckBoxPreference mAccelerometer;
     private CheckBoxPreference mRotation90Pref;
     private CheckBoxPreference mRotation180Pref;
     private CheckBoxPreference mRotation270Pref;
+
     private float[] mAnimationScales;
 
     private IWindowManager mWindowManager;
@@ -66,6 +75,13 @@ public class DisplaySettings extends PreferenceActivity implements
 
         addPreferencesFromResource(R.xml.display_settings);
 	PreferenceScreen prefSet = getPreferenceScreen();
+
+	mBacklightScreen = (PreferenceScreen) prefSet.findPreference(BACKLIGHT_SETTINGS);
+        // No reason to show backlight if no light sensor on device
+        if (((SensorManager)getSystemService(SENSOR_SERVICE)).getDefaultSensor(
+            Sensor.TYPE_LIGHT) == null) {
+            ((PreferenceCategory)prefSet.findPreference(BACKLIGHT_SETTINGS)).removePreference(mBacklightScreen);
+        }
 
         mAnimations = (ListPreference) findPreference(KEY_ANIMATIONS);
         mAnimations.setOnPreferenceChangeListener(this);
@@ -178,6 +194,9 @@ public class DisplaySettings extends PreferenceActivity implements
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        if (preference == mBacklightScreen) {
+	    startActivity(mBacklightScreen.getIntent());
+        }
         if (preference == mAccelerometer) {
             Settings.System.putInt(getContentResolver(),
                     Settings.System.ACCELEROMETER_ROTATION,

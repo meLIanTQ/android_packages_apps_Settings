@@ -1277,4 +1277,44 @@
     <string name="performance_settings_warning_title">ATTENTION AUX DRAGONS !</string>
     <string name="performance_settings_warning">Les options présentes ici changeront les performances du système, que ce soit en bien ou en mal. Elles sont là à des fins d\'expérimentation. C\'est pourquoi nous vous demandons de ne pas remplir de rapport de bug lorsque vous changez ces options.</string>
 
+    <!-- Backlight -->
+    <string name="backlight_title">Rétroéclairage automatique</string>
+    <string name="backlight_summary">Tweaks et niveaux de filtrage</string>
+    <string name="light_filter_title">Filtrage du capteur de lumière</string>
+    <string name="light_filter_enabled_title">Activé</string>
+    <string name="light_filter_enabled_summary">Appliquer le filtre moyen afin de réduire le scintillement</string>
+    <string name="light_filter_window_title">Longueur de la fenêtre</string>
+    <string name="light_filter_window_summary">La valeur filtrée est la valeur moyenne du capteur de lumière durant une certaine période</string>
+    <string name="light_filter_reset_title">Seuil de remise à zéro</string>
+    <string name="light_filter_reset_summary">Les échantillons qui dépassent le seuil annulent le filtre</string>
+    <string name="light_filter_interval_title">Intervalle d\'échantillonage</string>
+    <string name="light_filter_interval_summary">Une valeur plus basse améliore l\'efficacité mais utilise plus le CPU</string>
+    <string name="light_levels_title">Niveaux de lumière</string>
+    <string name="light_levels_enabled_title">Utiliser valeur personnalisée</string>
+    <string name="light_levels_dim_title">Niveau d\'obscurcissement</string>
+    <string name="light_levels_dim_summary">Niveau de luminosité utilisé pour l\'obscurcissement</string>
+    <string name="light_levels_editor_title">Éditer les autres niveaux...</string>
+    <string name="light_decrease_enabled_title">Autoriser diminution luminosité</string>
+    <string name="light_decrease_enabled_summary">Activer afin d\'autoriser la diminution des éclairages. Utiliser l\'hystérésis pour réduire le scintillement.</string>
+    <string name="light_decrease_hysteresis_title">Diminuer l\'hystérésis</string>
+    <string name="light_decrease_hysteresis_summary">Les niveaux de mesures se chevaucheront de tant vers le bas.</string>
+
+    <!-- Light sensor levels -->
+    <string name="ll_title">Niveaux du capteur d\'éclairage</string>
+    <string name="ll_header_upper">Plus haut</string>
+    <string name="ll_header_lower">Plus bas</string>
+    <string name="ll_header_lcd">Écran</string>
+    <string name="ll_header_btn">Boutons</string>
+    <string name="ll_header_kb">Clavier</string>
+    <string name="ll_lux">Capteur (filtré / brut):</string>
+    <string name="ll_lcd">Écran :</string>
+    <string name="ll_btn">Boutons :</string>
+    <string name="ll_kb">Clavier :</string>
+    <string name="ll_disabled">désactivé</string>
+    <string name="ll_default">Charger défauts</string>
+    <string name="ll_save">Enregistrer &amp; appliquer</string>
+    <string name="ll_reload">Recharger actifs</string>
+    <string name="ll_bad_levels">Les niveaux doivent croître</string>
+    <string name="ll_num_levels">Définir le nombre de niveaux</string>
+
 </resources>
