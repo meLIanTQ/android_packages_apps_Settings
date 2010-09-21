@@ -27,6 +27,18 @@
             android:key="accelerometer"
             android:title="@string/accelerometer_title"/>
 
+	<!-- Rotation -->
+	<PreferenceScreen android:title="@string/ui_rotation_title">
+		<PreferenceCategory android:title="@string/ui_rotation_title">
+			<CheckBoxPreference android:key="pref_rotation_90"
+            		android:title="@string/pref_rotation_90_title" />
+        		<CheckBoxPreference android:key="pref_rotation_180"
+            		android:title="@string/pref_rotation_180_title" />
+        		<CheckBoxPreference android:key="pref_rotation_270"
+            		android:title="@string/pref_rotation_270_title" />
+		</PreferenceCategory>
+	</PreferenceScreen>
+
         <ListPreference
             android:key="animations"
             android:title="@string/animations_title"

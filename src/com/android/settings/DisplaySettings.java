@@ -45,9 +45,15 @@ public class DisplaySettings extends PreferenceActivity implements
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_ANIMATIONS = "animations";
     private static final String KEY_ACCELEROMETER = "accelerometer";
+    private static final String ROTATION_90_PREF = "pref_rotation_90";
+    private static final String ROTATION_180_PREF = "pref_rotation_180";
+    private static final String ROTATION_270_PREF = "pref_rotation_270";
 
     private ListPreference mAnimations;
     private CheckBoxPreference mAccelerometer;
+    private CheckBoxPreference mRotation90Pref;
+    private CheckBoxPreference mRotation180Pref;
+    private CheckBoxPreference mRotation270Pref;
     private float[] mAnimationScales;
 
     private IWindowManager mWindowManager;
@@ -59,11 +65,22 @@ public class DisplaySettings extends PreferenceActivity implements
         mWindowManager = IWindowManager.Stub.asInterface(ServiceManager.getService("window"));
 
         addPreferencesFromResource(R.xml.display_settings);
+	PreferenceScreen prefSet = getPreferenceScreen();
 
         mAnimations = (ListPreference) findPreference(KEY_ANIMATIONS);
         mAnimations.setOnPreferenceChangeListener(this);
         mAccelerometer = (CheckBoxPreference) findPreference(KEY_ACCELEROMETER);
         mAccelerometer.setPersistent(false);
+
+        /* Rotation */
+        mRotation90Pref = (CheckBoxPreference) prefSet.findPreference(ROTATION_90_PREF);
+        mRotation180Pref = (CheckBoxPreference) prefSet.findPreference(ROTATION_180_PREF);
+        mRotation270Pref = (CheckBoxPreference) prefSet.findPreference(ROTATION_270_PREF);
+        int mode = Settings.System.getInt(getContentResolver(),
+                        Settings.System.ACCELEROMETER_ROTATION_MODE, 5);
+        mRotation90Pref.setChecked((mode & 1) != 0);
+        mRotation180Pref.setChecked((mode & 2) != 0);
+        mRotation270Pref.setChecked((mode & 4) != 0);
 
         ListPreference screenTimeoutPreference =
             (ListPreference) findPreference(KEY_SCREEN_TIMEOUT);
@@ -165,6 +182,16 @@ public class DisplaySettings extends PreferenceActivity implements
             Settings.System.putInt(getContentResolver(),
                     Settings.System.ACCELEROMETER_ROTATION,
                     mAccelerometer.isChecked() ? 1 : 0);
+        }
+        if (preference == mRotation90Pref ||
+            preference == mRotation180Pref ||
+            preference == mRotation270Pref) {
+            int mode = 0;
+            if (mRotation90Pref.isChecked()) mode |= 1;
+            if (mRotation180Pref.isChecked()) mode |= 2;
+            if (mRotation270Pref.isChecked()) mode |= 4;
+            Settings.System.putInt(getContentResolver(),
+                     Settings.System.ACCELEROMETER_ROTATION_MODE, mode);
         }
         return true;
     }
