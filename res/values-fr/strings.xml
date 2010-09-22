@@ -1253,6 +1253,10 @@
     <string name="pref_lock_home_title">Garder l\'accueil en mémoire</string>
     <string name="pref_lock_home_summary">Tenter de garder l\'application Accueil dans la mémoire en tout temps</string>
 
+    <!-- Performance : Lock mms app in memory -->
+    <string name="pref_lock_mms_title">Garder l\'application SMS en memoire</string>
+    <string name="pref_lock_mms_summary">Évitez les messages perdus sur les situations de mémoire insuffisante</string>
+
     <!-- Performance Settings -->
     <string name="performance_settings_title">Paramètres de performance</string>
 

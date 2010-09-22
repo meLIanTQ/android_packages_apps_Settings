@@ -70,12 +70,15 @@ public class DevelopmentSettings extends PreferenceActivity
     private static final String USE_DITHERING_PERSIST_PROP = "persist.sys.use_dithering";
     private static final String USE_DITHERING_DEFAULT = "1";
     private static final String LOCK_HOME_PREF = "pref_lock_home";
+    private static final String LOCK_MMS_PREF = "pref_lock_mms";
     private static final int LOCK_HOME_DEFAULT = 0;
+    private static final int LOCK_MMS_DEFAULT = 1;
 
     private CheckBoxPreference mCompcachePref;
     private CheckBoxPreference mJitPref;
     private CheckBoxPreference mUseDitheringPref;
     private CheckBoxPreference mLockHomePref;
+    private CheckBoxPreference mLockMmsPref;
 
     private ListPreference mHeapsizePref;
 
@@ -122,6 +125,10 @@ public class DevelopmentSettings extends PreferenceActivity
         mLockHomePref = (CheckBoxPreference) prefSet.findPreference(LOCK_HOME_PREF);
         mLockHomePref.setChecked(Settings.System.getInt(getContentResolver(),
                 Settings.System.LOCK_HOME_IN_MEMORY, LOCK_HOME_DEFAULT) == 1);
+
+        mLockMmsPref = (CheckBoxPreference) prefSet.findPreference(LOCK_MMS_PREF);
+        mLockMmsPref.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.LOCK_MMS_IN_MEMORY, LOCK_MMS_DEFAULT) == 1);
 
         // Set up the warning
         alertDialog = new AlertDialog.Builder(this).create();
@@ -205,6 +212,11 @@ public class DevelopmentSettings extends PreferenceActivity
         if (preference == mLockHomePref) {
             Settings.System.putInt(getContentResolver(),
                     Settings.System.LOCK_HOME_IN_MEMORY, mLockHomePref.isChecked() ? 1 : 0);
+            return true;
+        }
+        if (preference == mLockMmsPref) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.LOCK_MMS_IN_MEMORY, mLockMmsPref.isChecked() ? 1 : 0);
             return true;
         }
         return false;
