@@ -2708,7 +2708,6 @@ found in the list of installed applications.</string>
 
     <!-- Performance Settings -->
     <string name="performance_settings_title">Performance settings</string>
-    <string name="performance_settings_summary">Device performance tweaks</string>
 
     <!-- Performance Settings : Compcache -->
     <string name="pref_compcache_title">Use Compcache</string>
@@ -2771,23 +2770,73 @@ found in the list of installed applications.</string>
     <string name="ll_num_levels">Set number of levels</string>
 
     <!-- Quiet hours -->
-    <string name="sound_category_quiet_hours_title">Heures silencieuses</string>
-    <string name="quiet_hours_enabled">Activer heures silencieuses</string>
-    <string name="quiet_hours_enabled_on">Les heures silencieuses seront activées</string>
-    <string name="quiet_hours_enabled_off">Les notifications se comporteront normalement</string>
-    <string name="quiet_hours_start">Début des heures silencieuses</string>
-    <string name="quiet_hours_start_summary">Définir quand les heures silencieuses débutent</string>
-    <string name="quiet_hours_end">Fin des heures silencieuses</string>
-    <string name="quiet_hours_end_summary">Définir quand les heures silencieuses finissent</string>
-    <string name="quiet_hours_mute">Notifications muettes</string>
-    <string name="quiet_hours_mute_on">Aucun son ne sera joué</string>
-    <string name="quiet_hours_mute_off">Les sons se joueront normalement</string>
-    <string name="quiet_hours_still">Désactiver les vibrations</string>
-    <string name="quiet_hours_still_on">Le téléphone ne vibrera pas</string>
-    <string name="quiet_hours_still_off">Le téléphone vibrera normalement</string>
+    <string name="sound_category_quiet_hours_title">Quiet hours</string>
+    <string name="quiet_hours_enabled">Enable quiet hours</string>
+    <string name="quiet_hours_enabled_on">Quiet hours will be enforced</string>
+    <string name="quiet_hours_enabled_off">Notifications will behave like normal</string>
+    <string name="quiet_hours_start">Start of quiet hours</string>
+    <string name="quiet_hours_start_summary">When to start enforcing quiet hours</string>
+    <string name="quiet_hours_end">End of quiet hours</string>
+    <string name="quiet_hours_end_summary">When to stop enforcing quiet hours</string>
+    <string name="quiet_hours_mute">Mute notifications</string>
+    <string name="quiet_hours_mute_on">No sounds will be played</string>
+    <string name="quiet_hours_mute_off">Sounds will play like normal</string>
+    <string name="quiet_hours_still">Disable vibrations</string>
+    <string name="quiet_hours_still_on">Device will not vibrate</string>
+    <string name="quiet_hours_still_off">Device will vibrate normally</string>
     <!-- LED need debug (bravo) -->
-    <string name="quiet_hours_dim">Diminuer éclairage LED</string>
-    <string name="quiet_hours_dim_on">La LED éclairera avec moins de puissance</string>
-    <string name="quiet_hours_dim_off">La LED éclairera avec le maximum de puissance</string>
+    <string name="quiet_hours_dim">Dim LED</string>
+    <string name="quiet_hours_dim_on">LED will dim if possible</string>
+    <string name="quiet_hours_dim_off">LED will be full brightness</string>
+
+    <!-- Spare Parts -->
+    <string name="spareparts_title">Spare Parts</string>
+    <string name="spareparts_summary">Extended Settings</string>
+
+    <string name="device_info_title">Device info</string>
+    
+    <string name="title_battery_history">Battery history</string>
+    <string name="summary_battery_history">Summary of how battery has been used</string>
+    
+    <string name="title_battery_information">Battery information</string>
+    <string name="summary_battery_information">Current battery status information</string>
+    
+    <string name="title_usage_statistics">Usage statistics</string>
+    <string name="summary_usage_statistics">Summary of application usage</string>
+    
+    <string name="general_title">General</string>
+    
+    <string name="title_window_animations">Window animations</string>
+    <string name="summary_window_animations">Speed of animations in individual windows</string>
+    <string name="dialog_title_window_animations">Select window speed</string>
+    
+    <string name="title_transition_animations">Transition animations</string>
+    <string name="summary_transition_animations">Speed of animations moving between screens</string>
+    <string name="dialog_title_transition_animations">Select transition speed</string>
+    
+    <string name="title_fancy_ime_animations">Fancy input animations</string>
+    <string name="summary_on_fancy_ime_animations">Use fancier animations for input method windows</string>
+    <string name="summary_off_fancy_ime_animations">Use normal animations for input method windows</string>
+    
+    <string name="title_haptic_feedback">Haptic feedback</string>
+    <string name="summary_on_haptic_feedback">Use haptic feedback with user interaction</string>
+    <string name="summary_off_haptic_feedback">Use haptic feedback with user interaction</string>
+    
+    <string name="title_font_size">Font size</string>
+    <string name="summary_font_size">Overall size of fonts</string>
+    <string name="dialog_title_font_size">Select font size</string>
+    
+    <string name="title_end_button">End button behavior</string>
+    <string name="summary_end_button">Select End (red) button action</string>
+    <string name="dialog_title_end_button">Select End button</string>
+    
+    <string name="applications_title">Applications</string>
+    
+    <!-- Sound & display settings screen, compatibility mode check box label -->
+    <string name="compatibility_mode_title">Compatibility Mode</string>
+    <!-- Sound & display settings screen, compatibility mode option summary text when check box is selected -->
+    <string name="compatibility_mode_summary_on">Run older apps in Compatibility mode. This require rebooting. </string>
+    <!-- Sound & display settings screen, compatibility mode option summary text when check box is clear -->
+    <string name="compatibility_mode_summary_off">Run older apps in Compatibility mode. This require rebooting. </string>
 
 </resources>

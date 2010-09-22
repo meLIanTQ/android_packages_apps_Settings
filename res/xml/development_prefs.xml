@@ -44,8 +44,9 @@
         android:summary="@string/kill_app_longpress_back_summary" />
 
     <!-- Performance settings -->
-    <PreferenceScreen android:key="performance_settings"
-        android:title="@string/performance_settings_title" android:summary="@string/performance_settings_summary">
+    <PreferenceCategory
+        android:title="@string/performance_settings_title">
+
     <CheckBoxPreference android:key="pref_compcache"
         android:title="@string/pref_compcache_title" android:summary="@string/pref_compcache_summary" />
 
@@ -61,6 +62,6 @@
     <ListPreference android:key="pref_heapsize" android:dialogTitle="@string/pref_heapsize_title"
         android:title="@string/pref_heapsize_title" android:summary="@string/pref_heapsize_summary"
         android:entries="@array/entries_heapsize" android:entryValues="@array/entries_heapsize" />
-    </PreferenceScreen>
+    </PreferenceCategory>
 
 </PreferenceScreen>
