@@ -1394,4 +1394,5 @@
     <!-- Sound & display settings screen, compatibility mode option summary text when check box is clear -->
     <string name="compatibility_mode_summary_off">Run older apps in Compatibility mode. This require rebooting. </string>
 
+    <string name="themes_settings_title">Configuration de l\'UI</string>
 </resources>
