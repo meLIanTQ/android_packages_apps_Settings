@@ -45,36 +45,6 @@
             android:persistent="false"
             android:streamType="ring" />
 
-    <PreferenceCategory
-            android:title="@string/sound_category_calls_title"/>
-
-    <com.android.settings.DefaultRingtonePreference
-            android:key="ringtone"
-            android:title="@string/ringtone_title"
-            android:summary="@string/ringtone_summary"
-            android:dialogTitle="@string/ringtone_title"
-            android:persistent="false"
-            android:ringtoneType="ringtone" />
-
-    <PreferenceCategory
-            android:title="@string/sound_category_notification_title"/>
-
-    <!-- Do not nest these, or removals in code will break -->
-
-    <com.android.settings.DefaultRingtonePreference
-            android:key="notification_sound"
-            android:title="@string/notification_sound_title"
-            android:summary="@string/notification_sound_summary"
-            android:dialogTitle="@string/notification_sound_dialog_title"
-            android:persistent="false"
-            android:ringtoneType="notification" />
-
-    <CheckBoxPreference
-            android:key="notification_pulse"
-            android:title="@string/notification_pulse_title"
-            android:summary="@string/notification_pulse_summary"
-            android:persistent="false" />
-
     <PreferenceScreen
             android:title="@string/sound_title"
             android:summary="@string/sound_summary">
@@ -109,6 +79,7 @@
         <CheckBoxPreference android:key="alarm-speaker"
             android:title="@string/sound_alarms_title"
             android:persistent="false" />
+
     </PreferenceCategory>
 
     <!-- Attenuation -->
@@ -168,6 +139,36 @@
             android:persistent="false" />
     </PreferenceCategory>
     </PreferenceScreen>
+
+    <PreferenceCategory
+            android:title="@string/sound_category_calls_title"/>
+
+    <com.android.settings.DefaultRingtonePreference
+            android:key="ringtone"
+            android:title="@string/ringtone_title"
+            android:summary="@string/ringtone_summary"
+            android:dialogTitle="@string/ringtone_title"
+            android:persistent="false"
+            android:ringtoneType="ringtone" />
+
+    <PreferenceCategory
+            android:title="@string/sound_category_notification_title"/>
+
+    <!-- Do not nest these, or removals in code will break -->
+
+    <com.android.settings.DefaultRingtonePreference
+            android:key="notification_sound"
+            android:title="@string/notification_sound_title"
+            android:summary="@string/notification_sound_summary"
+            android:dialogTitle="@string/notification_sound_dialog_title"
+            android:persistent="false"
+            android:ringtoneType="notification" />
+
+    <CheckBoxPreference
+            android:key="notification_pulse"
+            android:title="@string/notification_pulse_title"
+            android:summary="@string/notification_pulse_summary"
+            android:persistent="false" />
 
     <PreferenceScreen
             android:title="@string/sound_category_quiet_hours_title"
