@@ -292,6 +292,20 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="HapticTweaks" android:label="@string/haptic_title">
+         <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+        </intent-filter>
+        </activity>
+
+        <activity android:name="HapticAdjust"
+                  android:label="@string/title_haptic_menu">
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="DisplaySettings"
                 android:label="@string/display_settings"
                 android:clearTaskOnLaunch="true"

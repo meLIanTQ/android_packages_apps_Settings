@@ -27,14 +27,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.TelephonyManager;
@@ -57,7 +62,6 @@ public class SoundSettings extends PreferenceActivity implements
     private static final String KEY_VIBRATE = "vibrate";
     private static final String KEY_DTMF_TONE = "dtmf_tone";
     private static final String KEY_SOUND_EFFECTS = "sound_effects";
-    private static final String KEY_HAPTIC_FEEDBACK = "haptic_feedback";
     private static final String KEY_EMERGENCY_TONE = "emergency_tone";
     private static final String KEY_SOUND_SETTINGS = "sound_settings";
     private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
@@ -68,6 +72,16 @@ public class SoundSettings extends PreferenceActivity implements
     private static final String VALUE_VIBRATE_ONLY_SILENT = "silent";
     private static final String VALUE_VIBRATE_UNLESS_SILENT = "notsilent";
 
+    private static final String NOTIFICATIONS_FOCUS = "notif-focus";
+    private static final String NOTIFICATIONS_SPEAKER = "notif-speaker";
+    private static final String NOTIFICATIONS_ATTENUATION = "notif-attn";
+    private static final String NOTIFICATIONS_LIMITVOL = "notif-limitvol";
+    private static final String RINGS_SPEAKER = "ring-speaker";
+    private static final String RINGS_ATTENUATION = "ring-attn";
+    private static final String RINGS_LIMITVOL = "ring-limitvol";
+    private static final String ALARMS_SPEAKER = "alarm-speaker";
+    private static final String ALARMS_ATTENUATION = "alarm-attn";
+    private static final String ALARMS_LIMITVOL = "alarm-limitvol";
     private static final int DIALOG_QUIET_HOURS_START = 1;
     private static final int DIALOG_QUIET_HOURS_END = 2;
     private static final String KEY_QUIET_HOURS_ENABLED = "quiet_hours_enabled";
@@ -77,13 +91,22 @@ public class SoundSettings extends PreferenceActivity implements
     private static final String KEY_QUIET_HOURS_STILL = "quiet_hours_still";
     private static final String KEY_QUIET_HOURS_DIM = "quiet_hours_dim";
 
+    private static final String PREFIX = "persist.sys.";
+
+    private static final String HAPTIC_SETTINGS = "haptic_settings";
+
     private CheckBoxPreference mSilent;
     private CheckBoxPreference mQuietHoursEnabled;
     private Preference mQuietHoursStart;
     private Preference mQuietHoursEnd;
+    private PreferenceScreen mHapticScreen;
     private CheckBoxPreference mQuietHoursMute;
     private CheckBoxPreference mQuietHoursStill;
     private CheckBoxPreference mQuietHoursDim;
+
+    private static String getKey(String suffix) {
+        return PREFIX + suffix;
+    }
 
     /*
      * If we are currently in one of the silent modes (the ringer mode is set to either
@@ -95,7 +118,6 @@ public class SoundSettings extends PreferenceActivity implements
     private ListPreference mVibrate;
     private CheckBoxPreference mDtmfTone;
     private CheckBoxPreference mSoundEffects;
-    private CheckBoxPreference mHapticFeedback;
     private CheckBoxPreference mNotificationPulse;
     private CheckBoxPreference mLockSounds;
 
@@ -122,6 +144,8 @@ public class SoundSettings extends PreferenceActivity implements
 
         addPreferencesFromResource(R.xml.sound_settings);
 
+        PreferenceScreen prefSet = getPreferenceScreen();
+
         if (TelephonyManager.PHONE_TYPE_CDMA != activePhoneType) {
             // device is not CDMA, do not display CDMA emergency_tone
             getPreferenceScreen().removePreference(findPreference(KEY_EMERGENCY_TONE));
@@ -131,6 +155,53 @@ public class SoundSettings extends PreferenceActivity implements
 
         mVibrate = (ListPreference) findPreference(KEY_VIBRATE);
         mVibrate.setOnPreferenceChangeListener(this);
+
+        CheckBoxPreference p = (CheckBoxPreference) prefSet.findPreference(NOTIFICATIONS_FOCUS);
+        p.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.NOTIFICATIONS_AUDIO_FOCUS, 1) != 0);
+        p.setOnPreferenceChangeListener(this);
+
+        p = (CheckBoxPreference) prefSet.findPreference(NOTIFICATIONS_SPEAKER);
+        p.setChecked(SystemProperties.getBoolean(getKey(NOTIFICATIONS_SPEAKER), false));
+        p.setOnPreferenceChangeListener(this);
+
+        p = (CheckBoxPreference) prefSet.findPreference(RINGS_SPEAKER);
+        p.setChecked(SystemProperties.getBoolean(getKey(RINGS_SPEAKER), false));
+        p.setOnPreferenceChangeListener(this);
+
+        p = (CheckBoxPreference) prefSet.findPreference(ALARMS_SPEAKER);
+        p.setChecked(SystemProperties.getBoolean(getKey(ALARMS_SPEAKER), false));
+        p.setOnPreferenceChangeListener(this);
+
+        ListPreference lp = (ListPreference) prefSet.findPreference(NOTIFICATIONS_ATTENUATION);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(NOTIFICATIONS_ATTENUATION), 6)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
+
+        lp = (ListPreference) prefSet.findPreference(RINGS_ATTENUATION);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(RINGS_ATTENUATION), 6)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
+
+        lp = (ListPreference) prefSet.findPreference(ALARMS_ATTENUATION);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(ALARMS_ATTENUATION), 6)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
+
+        lp = (ListPreference) prefSet.findPreference(NOTIFICATIONS_LIMITVOL);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(NOTIFICATIONS_LIMITVOL), 1)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
+
+        lp = (ListPreference) prefSet.findPreference(RINGS_LIMITVOL);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(RINGS_LIMITVOL), 1)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
+
+        lp = (ListPreference) prefSet.findPreference(ALARMS_LIMITVOL);
+        lp.setValue(String.valueOf(SystemProperties.getInt(getKey(ALARMS_LIMITVOL), 1)));
+        lp.setSummary(lp.getEntry());
+        lp.setOnPreferenceChangeListener(this);
 
         mQuietHoursEnabled = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_ENABLED);
         mQuietHoursStart = findPreference(KEY_QUIET_HOURS_START);
@@ -147,10 +218,9 @@ public class SoundSettings extends PreferenceActivity implements
         mSoundEffects.setPersistent(false);
         mSoundEffects.setChecked(Settings.System.getInt(resolver,
                 Settings.System.SOUND_EFFECTS_ENABLED, 0) != 0);
-        mHapticFeedback = (CheckBoxPreference) findPreference(KEY_HAPTIC_FEEDBACK);
-        mHapticFeedback.setPersistent(false);
-        mHapticFeedback.setChecked(Settings.System.getInt(resolver,
-                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0) != 0);
+
+	mHapticScreen = (PreferenceScreen) findPreference(HAPTIC_SETTINGS);
+
         mLockSounds = (CheckBoxPreference) findPreference(KEY_LOCK_SOUNDS);
         mLockSounds.setPersistent(false);
         mLockSounds.setChecked(Settings.System.getInt(resolver,
@@ -344,7 +414,6 @@ public class SoundSettings extends PreferenceActivity implements
         } else if (preference == mDtmfTone) {
             Settings.System.putInt(getContentResolver(), Settings.System.DTMF_TONE_WHEN_DIALING,
                     mDtmfTone.isChecked() ? 1 : 0);
-
         } else if (preference == mSoundEffects) {
             if (mSoundEffects.isChecked()) {
                 mAudioManager.loadSoundEffects();
@@ -353,12 +422,7 @@ public class SoundSettings extends PreferenceActivity implements
             }
             Settings.System.putInt(getContentResolver(), Settings.System.SOUND_EFFECTS_ENABLED,
                     mSoundEffects.isChecked() ? 1 : 0);
-
-        } else if (preference == mHapticFeedback) {
-            Settings.System.putInt(getContentResolver(), Settings.System.HAPTIC_FEEDBACK_ENABLED,
-                    mHapticFeedback.isChecked() ? 1 : 0);
-
-        } else if (preference == mLockSounds) {
+	} else if (preference == mLockSounds) {
             Settings.System.putInt(getContentResolver(), Settings.System.LOCKSCREEN_SOUNDS_ENABLED,
                     mLockSounds.isChecked() ? 1 : 0);
 
@@ -367,7 +431,9 @@ public class SoundSettings extends PreferenceActivity implements
             Settings.System.putInt(getContentResolver(),
                     Settings.System.NOTIFICATION_LIGHT_PULSE, value ? 1 : 0);
         }
-
+	if (preference == mHapticScreen) {
+	startActivity(mHapticScreen.getIntent());
+        }
         return true;
     }
 
@@ -381,11 +447,21 @@ public class SoundSettings extends PreferenceActivity implements
             } catch (NumberFormatException e) {
                 Log.e(TAG, "could not persist emergency tone setting", e);
             }
-        } else if (preference == mVibrate) {
+        }
+	if (preference == mVibrate) {
             setPhoneVibrateSettingValue(objValue.toString());
             updateState(false);
+        } else if (key.equals(NOTIFICATIONS_FOCUS)) {
+            Settings.System.putInt(getContentResolver(),
+                Settings.System.NOTIFICATIONS_AUDIO_FOCUS, getBoolean(objValue) ? 1 : 0);
+        }else if (key.equals(NOTIFICATIONS_SPEAKER) ||
+                key.equals(RINGS_SPEAKER) ||
+                key.equals(ALARMS_SPEAKER)) {
+            SystemProperties.set(getKey(key), getBoolean(objValue) ? "1" : "0");
+        } else {
+            SystemProperties.set(getKey(key), String.valueOf(getInt(objValue)));
+            mHandler.sendMessage(mHandler.obtainMessage(0, key));
         }
-
         return true;
     }
     @Override
@@ -430,4 +506,26 @@ public class SoundSettings extends PreferenceActivity implements
         );
         return dlg;
     }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    if (msg.obj != null) {
+                        ListPreference p = (ListPreference) findPreference(msg.obj.toString());
+                        p.setSummary(p.getEntry());
+                    }
+                    break;
+            }
+        }
+    };
+
+    private boolean getBoolean(Object o) {
+        return Boolean.valueOf(o.toString());
+    }
+
+    private int getInt(Object o) {
+        return Integer.valueOf(o.toString());
+    }
+
 }

@@ -197,4 +197,9 @@
         <item>2500 lux</item>
     </string-array>
 
+    <string-array name="entries_sound_limitvol">
+        <item>Réglage atténué du système</item>
+        <item>Volume de la musique (par défaut)</item>
+    </string-array>
+
 </resources>

@@ -1326,6 +1326,7 @@
 
     <!-- Quiet hours -->
     <string name="sound_category_quiet_hours_title">Heures silencieuses</string>
+    <string name="sound_category_quiet_hours_summary">Ajustement des heures silencieuses</string>
     <string name="quiet_hours_enabled">Activer heures silencieuses</string>
     <string name="quiet_hours_enabled_on">Les heures silencieuses seront activées</string>
     <string name="quiet_hours_enabled_off">Les notifications se comporteront normalement</string>
@@ -1395,4 +1396,69 @@
     <string name="compatibility_mode_summary_off">Run older apps in Compatibility mode. This require rebooting. </string>
 
     <string name="themes_settings_title">Configuration de l\'UI</string>
+
+    <!-- Sound -->
+    <string name="sound_title">Paramètres du son</string>
+    <string name="sound_summary">Paramètres et ajustements sonores</string>
+    <string name="sound_notifications_focus_title">Priorité aux notifications</string>
+    <string name="sound_notifications_focus_summary">Les applications compatibles baisseront leurs volumes lors d\'une notification</string>
+    <string name="sound_to_speaker_title">Toujours dans le haut-parleur</string>
+    <string name="sound_notifications_title">Notifications</string>
+    <string name="sound_rings_title">Sonneries</string>
+    <string name="sound_alarms_title">Alarmes</string>
+    <string name="sound_note_title">Remarque</string>
+    <string name="sound_note_summary">Le paramètre ci-dessous ne s\'applique seulement lorsqu\'un casque est utilisé</string>
+    <string name="sound_attenuation_title">Diminution du volume</string>
+    <string name="sound_limitvol_title">Volume lors de la lecture musicale</string>
+    <string name="sound_notifications_attenuation_dialog">Atténuation des notifications</string>
+    <string name="sound_rings_attenuation_dialog">Atténuation des sonneries</string>
+    <string name="sound_alarms_attenuation_dialog">Atténuation des alarmes</string>
+    <string name="sound_notifications_limitvol_dialog">Volume de notification</string>
+    <string name="sound_rings_limitvol_dialog">Volume de la sonnerie</string>
+    <string name="sound_alarms_limitvol_dialog">Volume des alarmes</string>
+
+    <!-- HapticTweaks -->
+    <string name="haptic_title">Tweaks du retour haptique</string>
+    <string name="haptic_summary">Ajuster quand et comment le retour haptique s\'activera</string>
+
+    <string name="title_haptic_feedback_up">Retour au relâchement</string>
+    <string name="summary_on_haptic_feedback_up">Utiliser le retour haptique lors du relâchement de certaines touches</string>
+    <string name="summary_off_haptic_feedback_up">Ne pas utiliser le retour haptique lors du relâchement de certaines touches</string>
+
+    <string name="title_haptic_feedback_all">Retour à la séléction</string>
+    <string name="summary_on_haptic_feedback_all">Utiliser le retour haptique lors de séléctions à l\'écran</string>
+    <string name="summary_off_haptic_feedback_all">Ne pas utiliser le retour haptique lors de séléctions à l\'écran</string>
+
+    <string name="title_haptic_down_decider">Séquence à la pression</string>
+    <string name="title_haptic_up_decider">Séquence au relâchement</string>
+    <string name="title_haptic_long_decider">Séquence à la pression longue</string>
+    <string name="title_haptic_tap_decider">Séquence à l\'appui clavier</string>
+
+    <string name="title_haptic_menu">Séquence des vibrations</string>
+    <string name="title_haptic_notice">REDÉMARRAGE REQUIS AFIN QUE LES CHANGEMENTS S\'APPLIQUENT</string>
+
+    <string name="haptic_delay_desc">ms au repos</string>
+    <string name="haptic_vibe_desc">ms en action</string>
+
+    <string name="haptic_down_description">Ajustement des valeurs haptiques pour les PRESSIONS\n(Touches physiques et certaines interactions.)</string>
+    <string name="haptic_up_description">Ajustement des valeurs haptiques pour les RELÂCHEMENTS\n(Touches physiques et la plupart des pressions à l\'écran.)</string>
+    <string name="haptic_long_description">Ajustement des valeurs haptiques pour les PRESSIONS LONGUES.</string>
+    <string name="haptic_tap_description">Ajustement des valeurs haptiques pour les pressions de touches sur le clavier virtuel</string>
+
+    <string name="haptic_plus_minus_desc">Presser les boutons + et - afin d\'ajouter ou de supprimer des étapes à la séquence.</string>
+
+    <string name="haptic_button_plus">+</string>
+    <string name="haptic_button_minus">-</string>
+
+    <string name="haptic_button_save">Enregistrer</string>
+    <string name="haptic_button_test">Tester</string>
+    <string name="haptic_button_cancel">Annuler</string>
+    <string name="haptic_button_revert">Revenir en arrière</string>
+    <string name="haptic_button_default">Par défaut</string>
+
+    <string name="haptic_save_toast">Enregistrement des valeurs haptiques : </string>
+    <string name="haptic_cancel_toast">Valeurs haptiques inchangées</string>
+    <string name="haptic_revert_toast">Restauration des dernières valeurs</string>
+    <string name="haptic_default_toast">Chargement des valeurs par défaut</string>
+
 </resources>
