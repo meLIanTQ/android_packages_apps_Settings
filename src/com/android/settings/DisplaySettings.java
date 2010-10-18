@@ -123,6 +123,8 @@ public class DisplaySettings extends PreferenceActivity implements
         mPowerWidgetColor = prefSet.findPreference(UI_EXP_WIDGET_COLOR);
         mPowerPicker = (PreferenceScreen)prefSet.findPreference(UI_EXP_WIDGET_PICKER);
 
+        mPowerWidget.setChecked((Settings.System.getInt(getContentResolver(),
+                    Settings.System.EXPANDED_VIEW_WIDGET, 1) == 1));
     }
 
     private void disableUnusableTimeouts(ListPreference screenTimeoutPreference) {

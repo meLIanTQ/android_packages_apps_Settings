@@ -1481,6 +1481,7 @@
     <string name="pref_lockscreen_quick_unlock_control_summary">Une pression sur OK n\'est plus nécessaire lors de la saisie d\'un PIN ou mot de passe. Effacer compte comme une erreur.</string>
 
     <!-- Expanded View Power Widget -->
+    <string name="title_widget_buttons">Expanded View Widget</string>
     <string name="title_expanded_widget">Gestion de l\'énergie en notification</string>
     <string name="summary_expanded_widget">Afficher le contrôle de l\'alimentation dans la barre de notification</string>
     <string name="expanded_color_mask">Couleur de l\'indicateur</string>
