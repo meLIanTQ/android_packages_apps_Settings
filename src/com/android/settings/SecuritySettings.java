@@ -96,6 +96,7 @@ public class SecuritySettings extends PreferenceActivity {
     // UnLock Settings
     private static final String LOCKSCREEN_MUSIC_CONTROLS = "lockscreen_music_controls";
     private static final String LOCKSCREEN_ALWAYS_MUSIC_CONTROLS = "lockscreen_always_music_controls";
+    private static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
     private static final String TRACKBALL_WAKE_PREF = "pref_trackball_wake";
     private static final String TRACKBALL_UNLOCK_PREF = "pref_trackball_unlock";
     private static final String MENU_UNLOCK_PREF = "pref_menu_unlock";
@@ -103,6 +104,7 @@ public class SecuritySettings extends PreferenceActivity {
 
     private CheckBoxPreference mMusicControlPref;
     private CheckBoxPreference mAlwaysMusicControlPref;
+    private CheckBoxPreference mQuickUnlockScreenPref;
     private CheckBoxPreference mTrackballWakePref;
     private CheckBoxPreference mTrackballUnlockPref;
     private CheckBoxPreference mMenuUnlockPref;
@@ -182,6 +184,12 @@ public class SecuritySettings extends PreferenceActivity {
         mAlwaysMusicControlPref = (CheckBoxPreference) prefSet.findPreference(LOCKSCREEN_ALWAYS_MUSIC_CONTROLS);
         mAlwaysMusicControlPref.setChecked(Settings.System.getInt(getContentResolver(), 
                 Settings.System.LOCKSCREEN_ALWAYS_MUSIC_CONTROLS, 0) == 1);
+
+        /* Quick Unlock Screen Control */
+        mQuickUnlockScreenPref = (CheckBoxPreference)
+                prefSet.findPreference(LOCKSCREEN_QUICK_UNLOCK_CONTROL);
+        mQuickUnlockScreenPref.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, 0) == 1);
 
         /* Trackball Wake */
         mTrackballWakePref = (CheckBoxPreference) prefSet.findPreference(TRACKBALL_WAKE_PREF);
@@ -414,6 +422,11 @@ public class SecuritySettings extends PreferenceActivity {
             value = mAlwaysMusicControlPref.isChecked();
             Settings.System.putInt(getContentResolver(),
                     Settings.System.LOCKSCREEN_ALWAYS_MUSIC_CONTROLS, value ? 1 : 0);
+            return true;
+        } else if (preference == mQuickUnlockScreenPref) {
+            value = mQuickUnlockScreenPref.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.LOCKSCREEN_QUICK_UNLOCK_CONTROL, value ? 1 : 0);
             return true;
         } else if (preference == mTrackballWakePref) {
             value = mTrackballWakePref.isChecked();

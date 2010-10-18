@@ -55,6 +55,10 @@
             android:title="@string/pref_lockscreen_always_music_controls_title" 
             android:summary="@string/pref_lockscreen_always_music_controls_summary" />
 
+        <CheckBoxPreference android:key="lockscreen_quick_unlock_control"
+            android:title="@string/pref_lockscreen_quick_unlock_control_title"
+	    android:summary="@string/pref_lockscreen_quick_unlock_control_summary" />
+
         <CheckBoxPreference
 	    android:key="pref_trackball_wake"
             android:title="@string/pref_trackball_wake_title"
