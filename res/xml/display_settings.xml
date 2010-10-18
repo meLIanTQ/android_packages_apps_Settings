@@ -77,8 +77,8 @@
       <PreferenceScreen android:key="widget_picker"
           android:title="@string/title_widget_picker" android:summary="@string/summary_widget_picker">
           <intent android:action="android.intent.action.MAIN"
-              android:targetPackage="com.cyanogenmod.cmparts"
-              android:targetClass="com.cyanogenmod.cmparts.activities.WidgetActivity" />
+              android:targetPackage="com.android.settings"
+              android:targetClass="com.android.settings.WidgetActivity" />
       </PreferenceScreen>
    </PreferenceCategory>
 

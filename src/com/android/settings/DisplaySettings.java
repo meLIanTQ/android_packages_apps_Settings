@@ -18,6 +18,8 @@ package com.android.settings;
 
 import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
 
+import com.android.settings.activities.ColorPickerDialog;
+
 import java.util.ArrayList;
 
 import android.hardware.Sensor;
@@ -26,6 +28,8 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.preference.CheckBoxPreference;
@@ -209,6 +213,7 @@ public class DisplaySettings extends PreferenceActivity implements
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        boolean value;
         if (preference == mBacklightScreen) {
 	    startActivity(mBacklightScreen.getIntent());
         }
