@@ -180,4 +180,14 @@
     <item>Grau</item>
     <item>Transparent</item>
   </string-array>
+
+  <string-array name="pref_compcache_size_entries">
+    <item>Ausgeschaltet</item>
+    <item>5% des gesamten RAM</item>
+    <item>15%</item>
+    <item>25% (Standard)</item>
+    <item>35%</item>
+    <item>45%</item>
+  </string-array>
+
 </resources>

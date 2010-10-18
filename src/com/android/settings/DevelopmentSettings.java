@@ -55,8 +55,9 @@ public class DevelopmentSettings extends PreferenceActivity
 
     private Dialog mOkDialog;
 
-    private static final String COMPCACHE_PREF = "pref_compcache";
-    private static final String COMPCACHE_PROP = "persist.service.compcache";
+    private static final String COMPCACHE_PREF = "pref_compcache_size";
+    private static final String COMPCACHE_PERSIST_PROP = "persist.service.compcache";
+    private static final String COMPCACHE_DEFAULT = "25";
     private static final String JIT_PREF = "pref_jit_mode";
     private static final String JIT_ENABLED = "int:jit";
     private static final String JIT_DISABLED = "int:fast";
@@ -74,7 +75,7 @@ public class DevelopmentSettings extends PreferenceActivity
     private static final int LOCK_HOME_DEFAULT = 0;
     private static final int LOCK_MMS_DEFAULT = 1;
 
-    private CheckBoxPreference mCompcachePref;
+    private ListPreference mCompcachePref;
     private CheckBoxPreference mJitPref;
     private CheckBoxPreference mUseDitheringPref;
     private CheckBoxPreference mLockHomePref;
@@ -101,9 +102,12 @@ public class DevelopmentSettings extends PreferenceActivity
         mKillAppLongpressBack = (CheckBoxPreference) findPreference(KILL_APP_LONGPRESS_BACK);
 
 	// Performance Settings
-        mCompcachePref = (CheckBoxPreference) prefSet.findPreference(COMPCACHE_PREF);
+        mCompcachePref = (ListPreference) prefSet.findPreference(COMPCACHE_PREF);
         if (isSwapAvailable()) {
-            mCompcachePref.setChecked(SystemProperties.getBoolean(COMPCACHE_PROP, false));
+	if (SystemProperties.get(COMPCACHE_PERSIST_PROP) == "1")
+                SystemProperties.set(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT);
+            mCompcachePref.setValue(SystemProperties.get(COMPCACHE_PERSIST_PROP, COMPCACHE_DEFAULT));
+            mCompcachePref.setOnPreferenceChangeListener(this);
         } else {
             prefSet.removePreference(mCompcachePref);
         }
@@ -195,10 +199,6 @@ public class DevelopmentSettings extends PreferenceActivity
             Settings.Secure.putInt(getContentResolver(), Settings.Secure.KILL_APP_LONGPRESS_BACK,
                     mKillAppLongpressBack.isChecked() ? 1 : 0);
         }
-	if (preference == mCompcachePref) {
-            SystemProperties.set(COMPCACHE_PROP, mCompcachePref.isChecked() ? "1" : "0");
-            return true;
-        }
         if (preference == mJitPref) {
             SystemProperties.set(JIT_PERSIST_PROP, 
                     mJitPref.isChecked() ? JIT_ENABLED : JIT_DISABLED);
@@ -251,6 +251,12 @@ public class DevelopmentSettings extends PreferenceActivity
                 SystemProperties.set(HEAPSIZE_PERSIST_PROP, (String)newValue);
                 return true;
             }
+        }
+        if (preference == mCompcachePref) {
+            if (newValue != null) {
+                SystemProperties.set(COMPCACHE_PERSIST_PROP, (String)newValue);
+                return true;
+	    }
         }
         return false;
     }
