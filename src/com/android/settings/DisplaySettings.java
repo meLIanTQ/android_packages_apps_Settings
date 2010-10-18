@@ -35,6 +35,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.IWindowManager;
 
@@ -54,6 +55,10 @@ public class DisplaySettings extends PreferenceActivity implements
     private static final String ROTATION_180_PREF = "pref_rotation_180";
     private static final String ROTATION_270_PREF = "pref_rotation_270";
 
+    private static final String UI_EXP_WIDGET = "expanded_widget";
+    private static final String UI_EXP_WIDGET_COLOR = "expanded_color_mask";
+    private static final String UI_EXP_WIDGET_PICKER = "widget_picker";
+
     private PreferenceScreen mBacklightScreen;
 
     private ListPreference mAnimations;
@@ -62,6 +67,10 @@ public class DisplaySettings extends PreferenceActivity implements
     private CheckBoxPreference mRotation90Pref;
     private CheckBoxPreference mRotation180Pref;
     private CheckBoxPreference mRotation270Pref;
+
+    private CheckBoxPreference mPowerWidget;
+    private Preference mPowerWidgetColor;
+    private PreferenceScreen mPowerPicker;
 
     private float[] mAnimationScales;
 
@@ -104,6 +113,12 @@ public class DisplaySettings extends PreferenceActivity implements
                 resolver, SCREEN_OFF_TIMEOUT, FALLBACK_SCREEN_TIMEOUT_VALUE)));
         screenTimeoutPreference.setOnPreferenceChangeListener(this);
         disableUnusableTimeouts(screenTimeoutPreference);
+
+        /* Expanded View Power Widget */
+        mPowerWidget = (CheckBoxPreference) prefSet.findPreference(UI_EXP_WIDGET);
+        mPowerWidgetColor = prefSet.findPreference(UI_EXP_WIDGET_COLOR);
+        mPowerPicker = (PreferenceScreen)prefSet.findPreference(UI_EXP_WIDGET_PICKER);
+
     }
 
     private void disableUnusableTimeouts(ListPreference screenTimeoutPreference) {
@@ -212,6 +227,21 @@ public class DisplaySettings extends PreferenceActivity implements
             Settings.System.putInt(getContentResolver(),
                      Settings.System.ACCELEROMETER_ROTATION_MODE, mode);
         }
+        if(preference == mPowerPicker) {
+            startActivity(mPowerPicker.getIntent());
+        }
+        if(preference == mPowerWidget) {
+            value = mPowerWidget.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.EXPANDED_VIEW_WIDGET, value ? 1 : 0);
+        }
+
+        if (preference == mPowerWidgetColor) {
+            ColorPickerDialog cp = new ColorPickerDialog(this,
+                mWidgetColorListener,
+                readWidgetColor());
+            cp.show();
+        }
         return true;
     }
 
@@ -248,4 +278,22 @@ public class DisplaySettings extends PreferenceActivity implements
 
         return true;
     }
+
+    private int readWidgetColor() {
+        try {
+            return Settings.System.getInt(getContentResolver(), Settings.System.EXPANDED_VIEW_WIDGET_COLOR);
+        }
+        catch (SettingNotFoundException e) {
+            return -16777216;
+        }
+    }
+    ColorPickerDialog.OnColorChangedListener mWidgetColorListener =
+        new ColorPickerDialog.OnColorChangedListener() {
+            public void colorChanged(int color) {
+                Settings.System.putInt(getContentResolver(), Settings.System.EXPANDED_VIEW_WIDGET_COLOR, color);
+            }
+            public void colorUpdate(int color) {
+            }
+    };
+
 }
