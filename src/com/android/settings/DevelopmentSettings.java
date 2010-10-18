@@ -68,7 +68,7 @@ public class DevelopmentSettings extends PreferenceActivity
     private static final String HEAPSIZE_DEFAULT = "16m";
     private static final String USE_DITHERING_PREF = "pref_use_dithering";
     private static final String USE_DITHERING_PERSIST_PROP = "persist.sys.use_dithering";
-    private static final String USE_DITHERING_DEFAULT = "1";
+    private static final String USE_DITHERING_DEFAULT = "0";
     private static final String LOCK_HOME_PREF = "pref_lock_home";
     private static final String LOCK_MMS_PREF = "pref_lock_mms";
     private static final int LOCK_HOME_DEFAULT = 0;
