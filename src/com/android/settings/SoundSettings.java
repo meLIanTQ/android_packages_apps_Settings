@@ -60,6 +60,7 @@ public class SoundSettings extends PreferenceActivity implements
 
     private static final String KEY_SILENT = "silent";
     private static final String KEY_VIBRATE = "vibrate";
+    private static final String KEY_VOLUME_CONTROL_SILENT = "volume_control_silent";
     private static final String KEY_DTMF_TONE = "dtmf_tone";
     private static final String KEY_SOUND_EFFECTS = "sound_effects";
     private static final String KEY_EMERGENCY_TONE = "emergency_tone";
@@ -99,6 +100,7 @@ public class SoundSettings extends PreferenceActivity implements
     private static final String HAPTIC_SETTINGS = "haptic_settings";
 
     private CheckBoxPreference mSilent;
+    private CheckBoxPreference mVolumeControlSilent;
     private CheckBoxPreference mQuietHoursEnabled;
     private Preference mQuietHoursStart;
     private Preference mQuietHoursEnd;
@@ -215,6 +217,11 @@ public class SoundSettings extends PreferenceActivity implements
         mQuietHoursMute = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_MUTE);
         mQuietHoursStill = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_STILL);
         mQuietHoursDim = (CheckBoxPreference) findPreference(KEY_QUIET_HOURS_DIM);
+
+        mVolumeControlSilent = (CheckBoxPreference)
+                findPreference(KEY_VOLUME_CONTROL_SILENT);
+        mVolumeControlSilent.setChecked(Settings.System.getInt(resolver,
+                Settings.System.VOLUME_CONTROL_SILENT, 0) == 1);
 
         mDtmfTone = (CheckBoxPreference) findPreference(KEY_DTMF_TONE);
         mDtmfTone.setPersistent(false);
@@ -398,6 +405,10 @@ public class SoundSettings extends PreferenceActivity implements
         }
         mVibrate.setSummary(mVibrate.getEntry());
 
+        boolean vibeInSilent = (1 == Settings.System.getInt(getContentResolver(),
+                                                            Settings.System.VIBRATE_IN_SILENT,1));
+        mVolumeControlSilent.setEnabled(vibeInSilent);
+
         int silentModeStreams = Settings.System.getInt(getContentResolver(),
                 Settings.System.MODE_RINGER_STREAMS_AFFECTED, 0);
         boolean isAlarmInclSilentMode = (silentModeStreams & (1 << AudioManager.STREAM_ALARM)) != 0;
@@ -447,6 +458,10 @@ public class SoundSettings extends PreferenceActivity implements
         } else if (preference == mQuietHoursEnd) {
             showDialog(DIALOG_QUIET_HOURS_END);
             return true;
+        } else if (preference == mVolumeControlSilent) {
+            boolean value = mVolumeControlSilent.isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.VOLUME_CONTROL_SILENT, value ? 1 : 0);
         } else if (preference == mDtmfTone) {
             Settings.System.putInt(getContentResolver(), Settings.System.DTMF_TONE_WHEN_DIALING,
                     mDtmfTone.isChecked() ? 1 : 0);
